@@ -41,15 +41,15 @@ def simulation_mm1(AT_rate, ST_rate, sim_time):
 		 
 	#initialize simulation
 	IAT = np.random.exponential(1/AT_rate) 						
-	arrival_t += IAT 											#generate interarrival time and add to arrival times
+	arrival_t += IAT 										#generate interarrival time and add to arrival times
 	t = arrival_t		
 
-	queue = np.append(queue, arrival_t)							#add client to queue
+	queue = np.append(queue, arrival_t)						#add client to queue
 	clock = np.append(clock, t)
 	n_queue = np.append(n_queue, len(queue))		
 
 	ST = np.random.exponential(1/ST_rate)							
-	departure_t = arrival_t + ST 								#generate departure time
+	departure_t = arrival_t + ST 							#generate departure time
 	ctimes = np.append(ctimes, departure_t - queue[0]) 
 
 	while not t > sim_time:
@@ -77,7 +77,7 @@ def simulation_mm1(AT_rate, ST_rate, sim_time):
 		t = arrival_t
 		clock = np.append(clock, t)
 		n_queue = np.append(n_queue, len(queue))		
-																	#departure time for the next customer
+																#departure time for the next customer
 	return n_queue, ctimes, clock
 
 def sim_plots(n_queue, ctimes, clock):
@@ -87,11 +87,11 @@ def sim_plots(n_queue, ctimes, clock):
 
 	sns.set_style('whitegrid')
 
-	ax1 = sns.lineplot(clock, n_queue, drawstyle='steps-post', ax = ax1)		#queue size step plot
+	ax1 = sns.lineplot(clock, n_queue, drawstyle='steps-post', ax = ax1)	#queue size step plot
 	ax1.set_title('N customers in system')
 	ax1.set(xlabel='time (tu)', ylabel='n clients')
 
-	ax2 = sns.lineplot(np.arange(len(ctimes)), ctimes, ax = ax2)				#waiting time plot 
+	ax2 = sns.lineplot(np.arange(len(ctimes)), ctimes, ax = ax2)			#waiting time plot 
 	ax2.set_title('Waiting time customers')
 	ax2.set(xlabel='client index', ylabel='waiting time (tu)')
 
