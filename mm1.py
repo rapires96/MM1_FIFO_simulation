@@ -41,15 +41,15 @@ def simulation_mm1(AT_rate, ST_rate, sim_time):
 		 
 	#initialize simulation
 	IAT = np.random.exponential(1/AT_rate) 						
-	arrival_t += IAT 										#generate interarrival time and add to arrival times
+	arrival_t += IAT 							#generate interarrival time and add to arrival times
 	t = arrival_t		
 
-	queue = np.append(queue, arrival_t)						#add client to queue
+	queue = np.append(queue, arrival_t)			#add client to queue
 	clock = np.append(clock, t)
 	n_queue = np.append(n_queue, len(queue))		
 
 	ST = np.random.exponential(1/ST_rate)							
-	departure_t = arrival_t + ST 							#generate departure time
+	departure_t = arrival_t + ST 				#generate departure time
 	ctimes = np.append(ctimes, departure_t - queue[0]) 
 
 	while not t > sim_time:
@@ -62,22 +62,24 @@ def simulation_mm1(AT_rate, ST_rate, sim_time):
 
 			t = departure_t
 			clock = np.append(clock, t)
-			queue = np.flip(queue[-1:0:-1])						#customer leaves the system		
+			queue = np.flip(queue[-1:0:-1])		#customer leaves the system		
 							
 			ST = np.random.exponential(1/ST_rate)
 
-			if queue[0] < departure_t:							#system not empty upon arrival departure time starts from previous departure
+			#departure time for the next customer
+
+			if queue[0] < departure_t:			#system not empty upon arrival departure time starts from previous departure
 				departure_t += ST	
-			else:												#system empty upon arrival departure time starts from arrival time
+			else:								#system empty upon arrival departure time starts from arrival time
 				departure_t = queue[0] + ST
 					
-			n_queue = np.append(n_queue, len(queue) - 1)		#subtract len queue by 1 since last arrival is after time t
+			n_queue = np.append(n_queue, len(queue) - 1) 	#subtract len queue by 1 since last arrival is after time t
 			ctimes = np.append(ctimes, departure_t - queue[0])
 									
 		t = arrival_t
 		clock = np.append(clock, t)
 		n_queue = np.append(n_queue, len(queue))		
-																#departure time for the next customer
+															
 	return n_queue, ctimes, clock
 
 def sim_plots(n_queue, ctimes, clock):
